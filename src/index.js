@@ -18,7 +18,6 @@ function mkDirByPathSync(targetDir, {isRelativeToScript = false} = {}) {
           console.log(err);
       }
     }
-
     return curDir;
   }, initDir);
 }
@@ -44,24 +43,26 @@ async function walk (dir) {
     return results;
 };
 
-async function init(cacheDir) {
-    let files = await walk('./src');
+async function init(sourceDir, cacheDir) {
+    let files = await walk(sourceDir);
     var zip = zlib.createGunzip();
     const currentDir = path.dirname(__filename);
-    const tmpDir = 'tmp'
-    //relativeiles = files.map(file => file.replace(currentDir, ''))
     files.map(filePath => {
         relativePath = filePath.replace(currentDir, '');
-        mkDirByPathSync(path.dirname(tmpDir + relativePath));
+        mkDirByPathSync(path.dirname(cacheDir + relativePath));
         const gzip = zlib.createGzip();
-        const ws = fs.createWriteStream(tmpDir + relativePath + '.gz');
+        const ws = fs.createWriteStream(cacheDir + relativePath + '.gz');
         fs.createReadStream(filePath).pipe(gzip).pipe(ws);
     });
     console.log(files.length + ' files writted successfully');
 }
-const cacheDir = './tmp'
+const
+    args = process.argv.splice(2),
+    srcDir = args[0] || 'src',
+    dstDir = args[1] || 'tmp';
+console.log('Reading on ' + srcDir + ' and writting on ' + dstDir);
 
-init('./tmp');
+init(srcDir, dstDir);
 
 module.exports = {
     walk,
