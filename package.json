@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "pretest": "rimraf tmp/*",
     "test": "jest"
   },
   "repository": {
@@ -19,5 +20,7 @@
   "devDependencies": {
     "jest": "^23.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "rimraf": "^2.6.2"
+  }
 }
