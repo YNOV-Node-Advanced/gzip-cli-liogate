@@ -4,8 +4,10 @@ const
 
 async function init(sourceDir, cacheDir) {
     let files = await walk(sourceDir);
-    files.map(async filePath => await compress(cacheDir, filePath));
-    console.log(files.length + ' files writted successfully');
+    const promises = files.map(async filePath => await compress(cacheDir, filePath));
+    Promise.all(promises).then(() => {
+        console.log(files.length + ' files writted successfully');
+    });
 }
 const
     args = process.argv.splice(2),

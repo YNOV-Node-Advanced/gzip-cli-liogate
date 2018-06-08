@@ -19,16 +19,11 @@ describe('walk', () => {
 
 describe('compress', () => {
     it('should find the compressed file with .gz', async () => {
-        const
-         cacheDir = path.resolve(path.dirname(__filename), '../../tmp/tests');
-         rawFile = path.resolve(path.dirname(__filename), 'worker.js'),
-         compressedFile = path.resolve(cacheDir, '__tests__/worker.js.gz');
+        const cacheDir = path.resolve(path.dirname(__filename), '../../tmp/tests');
+        const rawFile = path.resolve(path.dirname(__filename), 'worker.js');
+        const compressedFile = path.resolve(cacheDir, '__tests__/worker.js.gz');
         expect(fs.existsSync(compressedFile)).toBe(false);
-        try {
-            await compress('./tmp/tests', rawFile);
-        } catch (err) {
-            console.log(err);
-        }
+        await compress('./tmp/tests', rawFile);
         expect(fs.existsSync(compressedFile)).toBe(true);
     });
 });
